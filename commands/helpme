@@ -1,0 +1,51 @@
+#!/usr/bin/rbash
+
+COLOR='\033[1;32m' # ANSI код для зелёного цвета
+NoColor='\033[0m' # ANSI код очистки цвета (обычный текст)
+
+# Функция для определения длины строки + 2 пробела по краям
+function sizing() {
+	some_size=0
+	while IFS= read -r line; do
+		(( ${#line} > some_size )); some_size=${#line}
+	done <<< "$1"
+	echo $((some_size+2))
+}
+
+# Переменные для сохранения переданных аргументов
+# в формате подходящем для использования в команде ls
+flags=""
+extensions="--hide=*"
+files="--hide="
+
+# Перебор переданных аргументов (форматы файлов, которые нужно скрыть)
+for arg in "$@"; do
+        if [[ "$arg" == *"."* ]]; then
+                flags+="$extensions$arg "
+        else
+                flags+="$files$arg "
+        fi
+done
+
+echo " i Доступные команды:"
+# Сохраняем вывод команды ls usr/bin $flags в переменную 
+command=$(ls.old usr/bin $flags | tr '\n' ' ')
+if [ "$line" != "" ]; then
+	command=$(echo "${command:0:-1}")
+fi
+# Вычисляем длину вывода команды ls
+size=$(sizing "$command")
+
+# Верхняя часть рамки
+printf "╭"; for ((i=0; i<size; i++)); do printf "─"; done; printf "╮"
+
+# Выводим доступные команды в одной строке
+while IFS= read -r line; do
+	printf "\n│ "
+	printf "$COLOR$line$NoColor"
+	new_size=$((size-${#line}+2))
+	printf "%${new_size}s" "│"
+done <<< $command
+
+# Нижняя часть рамки
+printf "\n╰"; for ((i=0; i<size; i++)); do printf "─"; done; printf "╯\n"

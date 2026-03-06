@@ -1,0 +1,25 @@
+#!/usr/bin/rbash
+
+# Используем ранее экспортированную переменную USER_ID, так как использование $$ в скрипте
+# даст PID этого скрипта, а не оболочки, из которой он вызывается
+file="/usr/data/data_${USER_ID}.txt"
+# Максимальный размер в байтах (5 Кб)
+max=5120
+
+echo "Ваш файл - $file"
+# Запуск редактора в ограниченном режиме
+nano.old --restricted $file
+# Если файл существует...
+if [ -e  $file ]; then
+	# Вычисляем размер
+        bytes_count=$(cat $file | wc -c)
+	# Если размер больше максимально доступного...
+        if (("$bytes_count" > $max)); then
+		# Выводим то, что влезает в ограничение, чтобы можно было CTRL+C, CTRL+V
+                head -c $max $file
+                printf "\nFile too big. Allowed content listed above\n"
+		# Удаляем файл
+                rm
+        fi
+
+fi
