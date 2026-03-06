@@ -7,9 +7,9 @@
 ```bash
 git clone https://github.com/HappyTrashBin/Regex-Sandbox
 mkdir fingerprint-ssh
-sudo ssh-keygen -t rsa (ключи сохранить в файл ./fingerprint-ssh/ssh_host_rsa_key)
-docker build --build-arg USER_PASSWORD=[PASSWORD] -t regex .
-docker run --restart=unless-stopped --cpus="1" --memory="512m" -d --hostname regex --name regex-debian-p 2222:22 regex
+ssh-keygen -t rsa (ключи сохранить в файл ./fingerprint-ssh/ssh_host_rsa_key)
+sudo docker build --build-arg USER_PASSWORD=[PASSWORD] -t regex .
+sudo docker run --restart=unless-stopped --cpus="1" --memory="512m" -d --hostname regex --name regex-debian-p 2222:22 regex
 ```
 
 ## Структура проекта
