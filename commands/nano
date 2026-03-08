@@ -17,7 +17,7 @@ if [ -e  $file ]; then
         if (("$bytes_count" > $max)); then
 		# Выводим то, что влезает в ограничение, чтобы можно было CTRL+C, CTRL+V
                 head -c $max $file
-                printf "\nFile too big. Allowed content listed above\n"
+                printf "\nВаш файл слишком большой (> 5 Кб), текст, который умещается в лимит выведен выше\n"
 		# Удаляем файл
                 rm
         fi
