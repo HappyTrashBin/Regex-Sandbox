@@ -1,15 +1,13 @@
 #!/bin/bash
 
 # Построчная обработка вывода команды enable
-while IFS= read -r line; do
-	command=$(echo $line | awk '{printf $2}') # Очищаем строку
-	# Фильтруем команды, которые нужно оставить доступными
-	if [ "$command" = "enable" ] \
-	|| [ "$command" = "logout" ] \
-	|| [ "$command" = "exit" ] \
-	|| [ "$command" = "echo" ]; then continue; fi
-	# Записываем строку с запретом в указанную в первом аргументе директорию
-	echo "enable -n $command" >> $1
+while read -r enable command ; do
+    # Фильтруем команды, которые нужно оставить доступными
+    case "$command" in
+    enable | logout | exit | echo ) ;;
+    # Записываем строку с запретом в указанную в первом аргументе директорию
+    * ) echo "enable -n $command" >> $1 ;;
+    esac
 done <<< $(enable)
 
 # Запрещаем саму enable, чтобы нельзя было откатить запреты
