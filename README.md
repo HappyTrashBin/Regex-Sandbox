@@ -6,6 +6,7 @@
 
 ```bash
 git clone https://github.com/HappyTrashBin/Regex-Sandbox
+cd Regex-Sandbox
 mkdir fingerprint-ssh
 ssh-keygen -t rsa (ключи сохранить в файл ./fingerprint-ssh/ssh_host_rsa_key)
 sudo docker build --build-arg USER_PASSWORD=[PASSWORD] -t regex .
